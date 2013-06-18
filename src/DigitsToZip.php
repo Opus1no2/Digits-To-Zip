@@ -11,17 +11,17 @@ class DigitsToZip
     /**
      * @var int $_data | Zip code in digits
      */
-    protected $_data;
+    private $_data;
     
     const VALID_LENGTH = 6;
     
     /**
      *
-     * Mapping for the 'F' in the forward sorting order
+     * mapping for the 'F' in the forward sorting order
      *
      * @param array $f
      */
-    protected static $f = array(
+    private static $f = array(
         'x' => 9, 
         'y' => 9, 
         'v' => 8, 
@@ -46,9 +46,9 @@ class DigitsToZip
      * The chars 'd', 'f', 'i', 'o', 'q', 'u'
      * are not allowed as the 3rd or 5th letter
      *
-     * @param array $map
+     * @param array $_map
      */
-    protected static $map = array(
+    private static $_map = array(
         2 => array('a', 'b', 'c'),
         3 => array('e'),
         4 => array('g', 'h'),
@@ -64,7 +64,7 @@ class DigitsToZip
      *
      * @param array $s
      */
-    protected static $s = array(
+    private static $s = array(
         0,1,2,3,4,5,6,7,8,9
     );
     
@@ -89,10 +89,10 @@ class DigitsToZip
      *
      * @throws RunTimeException
      */
-    public function checkLength()
+    private function checkLength()
     {
         if (!strlen($this->_data) == self::VALID_LENGTH) {
-            throw new RunTimeException('Invalid legth');
+            throw new RunTimeException('Invalid length');
         }
     }
     
@@ -104,7 +104,7 @@ class DigitsToZip
      *
      * @throws RunTimeException
      */
-    public function validateF()
+    private function validateF()
     {
         $possible_F = array();
 
@@ -130,7 +130,7 @@ class DigitsToZip
      *
      * @throws RunTimeException
      */
-    public function validateNumber($num)
+    private static function _validateNumber($num)
     {
         if (in_array($num, self::$s)) {
             return $num;
@@ -148,10 +148,10 @@ class DigitsToZip
      *
      * @throws RunTimeException
      */
-    public function map($digit)
+    private static function _map($digit)
     {
-        if (array_key_exists($digit, self::$map)) {
-            return self::$map[$digit];
+        if (array_key_exists($digit, self::$_map)) {
+            return self::$_map[$digit];
         }
         throw new RunTimeException('Invalid Number');
     }
@@ -162,10 +162,10 @@ class DigitsToZip
      *
      * @return array
      */
-    protected function _getFS()
+    private function _getFS()
     {
         $f = $this->validateF();
-        $s = $this->validateNumber($this->_data[1]);
+        $s = self::_validateNumber($this->_data[1]);
         
         $possible_fs = array();
         
@@ -185,7 +185,7 @@ class DigitsToZip
      */
     private function _getFSA($possible_fs)
     {
-        $a = $this->map($this->_data[2]);
+        $a = self::_map($this->_data[2]);
         
         $possible_fsa = array();
         
@@ -209,7 +209,7 @@ class DigitsToZip
      */
     private function _getFSAL($possible_fsa)
     {
-        $l = $this->validateNumber($this->_data[3]);
+        $l = self::_validateNumber($this->_data[3]);
         
         $possible_fsal = array();
         
@@ -231,7 +231,7 @@ class DigitsToZip
      */
     private function _getFSALD($possible_fsal)
     {
-        $d = $this->map($this->_data[4]);
+        $d = self::_map($this->_data[4]);
         
         $possible_fsald = array();
         
@@ -255,7 +255,7 @@ class DigitsToZip
      */
     private function _getFSALDU($possible_fsald)
     {
-        $u = $this->validateNumber($this->_data[5]);
+        $u = self::_validateNumber($this->_data[5]);
         
         $possible_fsaldu = array();
         
